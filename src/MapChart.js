@@ -17,15 +17,24 @@ function parseTime( t ) {
     return d;
 }
 
-Date.prototype.stdTimezoneOffset = function () {
-    var jan = new Date(this.getFullYear(), 0, 1);
-    var jul = new Date(this.getFullYear(), 6, 1);
+function stdTimezoneOffset(date){
+    var jan = new Date(date.getFullYear(), 0, 1);
+    var jul = new Date(date.getFullYear(), 6, 1);
     return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
 }
 
-Date.prototype.isDstObserved = function () {
-    return this.getTimezoneOffset() < this.stdTimezoneOffset();
+function isDstObserved(date){
+    return date.getTimezoneOffset() < stdTimezoneOffset(date);
 }
+/*Date.prototype.stdTimezoneOffset = function () {
+    var jan = new Date(this.getFullYear(), 0, 1);
+    var jul = new Date(this.getFullYear(), 6, 1);
+    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+}*/
+
+/*Date.prototype.isDstObserved = function () {
+    return this.getTimezoneOffset() < this.stdTimezoneOffset();
+}*/
 
 const MapChart = ({ setTooltipContent }) => {
     return (
@@ -57,7 +66,8 @@ const MapChart = ({ setTooltipContent }) => {
                                 {
                                     var time = 0
                                     var h = 0
-                                    if (now.isDstObserved()) {
+                                    /*if (now.isDstObserved()) {*/
+                                    if(isDstObserved(now)){
                                         time = timezone[0].dstOffsetStr
                                         h = 3
                                     }
